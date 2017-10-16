@@ -19,7 +19,7 @@ public class SplashActivity extends AwesomeSplash {
         configSplash.setRevealFlagY(Flags.REVEAL_BOTTOM); //or Flags.REVEAL_TOP
 
         //Customize Logo
-        configSplash.setLogoSplash(R.mipmap.ic_logo); //or any other drawable
+        configSplash.setLogoSplash(R.drawable.logo_310); //or any other drawable
         configSplash.setAnimLogoSplashDuration(1000); //int ms
         configSplash.setAnimLogoSplashTechnique(Techniques.SlideInDown);//choose one form Techniques (ref: https://github.com/daimajia/AndroidViewAnimations)
 
