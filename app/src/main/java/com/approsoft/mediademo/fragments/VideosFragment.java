@@ -39,7 +39,11 @@ public class VideosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String folderPath = getArguments().getString("folderPath");
+        try{
+            folderPath = getArguments().getString("folderPath");
+        } catch (Exception e){
+
+        }
 
         utils = new Utils(getActivity().getApplicationContext());
         if(folderPath!=null){
