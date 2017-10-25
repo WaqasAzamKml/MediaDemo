@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.VideoPlayerActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
 
 </manifest>
