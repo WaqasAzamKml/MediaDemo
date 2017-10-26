@@ -140,6 +140,15 @@ public class VideoPlayerActivity extends AppCompatActivity {
         initMediaControls();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(exoPlayer!=null) {
+            exoPlayer.stop();
+            exoPlayer.release();
+        }
+    }
+
     private void initMediaControls() {
         initPlayButton();
         initSeekBar();
