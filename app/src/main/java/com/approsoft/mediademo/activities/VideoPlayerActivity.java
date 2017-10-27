@@ -1,8 +1,10 @@
 package com.approsoft.mediademo.activities;
 
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -23,6 +26,7 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
@@ -35,11 +39,17 @@ import java.util.Locale;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
+    private final String STATE_PLAYER_FULLSCREEN = "full_screen";
+    private final String STATE_PLAYER_LANDSCAPE = "landscape";
     private SeekBar seekPlayerProgress;
     private Handler handler;
     private ImageButton btnPlay;
     private TextView txtCurrentTime, txtEndTime;
     private boolean isPlaying = false;
+    private boolean isFullScreen = false;
+    private boolean isLandscape = false;
+    private ImageButton imgBtnFullScreen;
+    private ImageButton imgBtnRotateScreen;
 
     ArrayList<String> videoPathsList;
     List<MediaSource> videosList;
@@ -90,6 +100,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onRepeatModeChanged(int repeatMode) {
+
+        }
+
+        @Override
         public void onPlayerError(ExoPlaybackException error) {
             Log.i(TAG,"onPlaybackError: "+error.getMessage());
         }
@@ -98,6 +113,11 @@ public class VideoPlayerActivity extends AppCompatActivity {
         public void onPositionDiscontinuity() {
             Log.i(TAG,"onPositionDiscontinuity");
         }
+
+        @Override
+        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+        }
     };
 
     @Override
@@ -105,18 +125,65 @@ public class VideoPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
 
+        if(savedInstanceState!=null){
+            isFullScreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+            isLandscape = savedInstanceState.getBoolean(STATE_PLAYER_LANDSCAPE);
+        }
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         Bundle bundle = getIntent().getExtras();
         String uriString = bundle.getString("uriString");
         Uri videoURI = Uri.parse(uriString);
         prepareExoPlayerFromFileUri(videoURI);
 
         playerView = (SimpleExoPlayerView) findViewById(R.id.player_view);
+        if(isFullScreen)
+            playerView.setResizeMode(3);
+        else
+            playerView.setResizeMode(0);
+
+        PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
+        imgBtnFullScreen = controlView.findViewById(R.id.exo_full_screen);
+        imgBtnFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isFullScreen){
+                    playerView.setResizeMode(0);
+                    isFullScreen = false;
+                    imgBtnFullScreen.setImageResource(R.drawable.ic_fullscreen_expand);
+                }else {
+                    playerView.setResizeMode(3);
+                    isFullScreen = true;
+                    imgBtnFullScreen.setImageResource(R.drawable.ic_fullscreen_shrink);
+                }
+            }
+        });
+        imgBtnRotateScreen = controlView.findViewById(R.id.exo_rotate_screen);
+        imgBtnRotateScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isLandscape){
+                    isLandscape = false;
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }else{
+                    isLandscape = true;
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+            }
+        });
 
         playerView.setPlayer(exoPlayer);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putBoolean(STATE_PLAYER_FULLSCREEN, isFullScreen);
+        outState.putBoolean(STATE_PLAYER_LANDSCAPE, isLandscape);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
     private void prepareExoPlayerFromFileUri(Uri uri){
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector(null), new DefaultLoadControl());
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector(), new DefaultLoadControl());
         exoPlayer.addListener(eventListener);
 
         DataSpec dataSpec = new DataSpec(uri);
