@@ -68,6 +68,7 @@ public class VideosFragment extends Fragment {
                     public void onItemClick(View view, int i) {
                         Intent intent = new Intent(getActivity().getApplicationContext(), VideoPlayerActivity.class);
                         intent.putExtra("uriString", videos.get(i).getData());
+                        intent.putExtra("videoTitle", videos.get(i).getTitle());
                         startActivity(intent);
                     }
                 }));

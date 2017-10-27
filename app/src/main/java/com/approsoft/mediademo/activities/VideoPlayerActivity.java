@@ -44,12 +44,13 @@ public class VideoPlayerActivity extends AppCompatActivity {
     private SeekBar seekPlayerProgress;
     private Handler handler;
     private ImageButton btnPlay;
-    private TextView txtCurrentTime, txtEndTime;
+    private TextView txtCurrentTime, txtEndTime, tvTitle;
     private boolean isPlaying = false;
     private boolean isFullScreen = false;
     private boolean isLandscape = false;
     private ImageButton imgBtnFullScreen;
     private ImageButton imgBtnRotateScreen;
+    private ImageButton imgBtnBack;
 
     ArrayList<String> videoPathsList;
     List<MediaSource> videosList;
@@ -133,6 +134,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String uriString = bundle.getString("uriString");
+        String videoTitle = bundle.getString("videoTitle");
         Uri videoURI = Uri.parse(uriString);
         prepareExoPlayerFromFileUri(videoURI);
 
@@ -171,6 +173,17 @@ public class VideoPlayerActivity extends AppCompatActivity {
                 }
             }
         });
+        imgBtnBack = controlView.findViewById(R.id.exo_back);
+        imgBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exoPlayer.release();
+                VideoPlayerActivity.this.finish();
+            }
+        });
+
+        tvTitle = controlView.findViewById(R.id.tvTitle);
+        tvTitle.setText(videoTitle);
 
         playerView.setPlayer(exoPlayer);
     }

@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".activities.VideoPlayerActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="fullSensor"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
     </application>
 

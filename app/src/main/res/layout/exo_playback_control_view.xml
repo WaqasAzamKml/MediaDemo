@@ -13,15 +13,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#CC000000">
+        <ImageButton
+            android:id="@+id/exo_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:padding="8dp"
+            android:src="@drawable/ic_back" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:singleLine="true"
+            android:textColor="#d2d2d2"
+            android:textSize="20sp"
+            android:ellipsize="end"
+            android:paddingLeft="8dp" />
+    </LinearLayout>
 
     <ImageButton android:id="@+id/exo_favorite"
         style="@style/ExoMediaButton.Favorite"
+        android:layout_marginRight="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:background="#552d2d2d"/>
 
     <ImageButton android:id="@+id/exo_rotate_screen"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
         style="@style/ExoMediaButton.RotateScreen"
         android:background="#552d2d2d"/>
 
