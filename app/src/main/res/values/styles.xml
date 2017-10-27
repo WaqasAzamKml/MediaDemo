@@ -17,4 +17,26 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ExoMediaButton.Lock" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_lock</item>
+    </style>
+    <style name="ExoMediaButton.Unlock" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_unlock</item>
+    </style>
+    <style name="ExoMediaButton.RotateScreen" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_rotate_screen</item>
+    </style>
+    <style name="ExoMediaButton.Favorite" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_favorite</item>
+    </style>
+    <style name="ExoMediaButton.UnFavorite" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_favorite_red</item>
+    </style>
+    <style name="ExoMediaButton.FullScreen" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_fullscreen_expand</item>
+    </style>
+    <style name="ExoMediaButton.FitScreen" parent="ExoMediaButton.Play">
+        <item name="android:src">@drawable/ic_fullscreen_shrink</item>
+    </style>
+
 </resources>
